@@ -1,6 +1,9 @@
+#include "Teensy_PinDefinition.h"
+
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
+// Initialisation des differentes fonctions du Teensy
 LiquidCrystal_I2C lcd(0x27,16,2);
 
 void setup() {
