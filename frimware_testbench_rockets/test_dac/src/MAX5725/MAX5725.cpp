@@ -91,6 +91,45 @@
     writeData(command, value_high, value_low);
   }
 
+  void MAX5725::load_value_adjusted(MAX5725_chanel_t ch, double value, 
+      double minVal, double maxVal){
+    
+    //we adjust the value using a linear equation:
+    // y = m x +b
+    //where:
+    // x is the parameter value
+    // y is the value sent to the function load_calue (betwen 0 and 1)
+    // m is the slope such that y=0 when x==minVal and y=1 when x==maxVal
+    // b is the is the y intercept such that y=0 when x==minVal and y=1 when x==maxVal
+    //
+    //       val_adjusted
+    //            ^
+    //            |1     x
+    //            |    x
+    //            |  x
+    //            |x
+    //           x|
+    //         x  |
+    //       x    |
+    //     x      |0
+    //------------+--------------->val
+    //   minVal         maxVal
+
+    double m, b;
+    double val_adjusted;
+
+    m = 1/(maxVal-minVal); // m = deltaY/deltaX
+    b = -1*m*minVal; //0=m*minVal+b  <=> b=-m*minVal
+
+    //y=mx+b
+    val_adjusted = m *value + b;
+
+    if(val_adjusted > 1) val_adjusted = 1;
+    if(val_adjusted < 0) val_adjusted = 0;
+
+    load_value(ch, val_adjusted);
+  }
+
 
 
   void MAX5725::set_ref(uint8_t refValue){

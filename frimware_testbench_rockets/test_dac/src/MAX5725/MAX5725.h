@@ -53,6 +53,22 @@ public:
      * @param value value between 0 and 4095
      */
     void load_value(MAX5725_chanel_t ch, uint16_t value);
+
+    /**
+     * @brief load a value to the dac. If value == maxVal, the dac will output¸
+     *        the maximum voltage. If value == minVal, the dac will output the 
+     *        minimum voltage. If the value is in betwen minValm and maxVal, the
+     *        output will be interpolated. If the value is outisde this range, the 
+     *        dac output will be ethier at its maximum or minimum valuem witchever is
+     *        closer.
+     * 
+     * @param ch channel to use
+     * @param value   current value
+     * @param minVal minimum value, if value== minVal, the output of the dac wil be at its minimum
+     * @param maxVal maximum value, if value== maxVal, the output of the dac wil be at its maximum
+     */
+    void load_value_adjusted(MAX5725_chanel_t ch, double value, 
+        double minVal, double maxVal);
 private:
 
   /**

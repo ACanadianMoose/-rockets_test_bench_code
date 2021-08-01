@@ -12,9 +12,9 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  set_all_dac(0.5);
+  set_all_dac(400);
   delay(1000);
-  set_all_dac(0.75);
+  set_all_dac(650);
   delay(1000);
 
 }
@@ -23,7 +23,7 @@ void set_all_dac(double value){
   const MAX5725_chanel_t channel_used[6] = { OUT_0, OUT_1, OUT_2, 
                                     OUT_3, OUT_4, OUT_5};
   for(int i=0; i<6; i++){
-    dac.load_value(channel_used[i], value);
+    dac.load_value_adjusted(channel_used[i], value, -100, 900);
   }
 }
 
