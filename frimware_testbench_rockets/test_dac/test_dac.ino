@@ -13,9 +13,9 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   set_all_dac(400);
-  delay(1000);
+  delay(5000);
   set_all_dac(650);
-  delay(1000);
+  delay(5000);
 
 }
 
