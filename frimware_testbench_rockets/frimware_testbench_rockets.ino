@@ -205,15 +205,12 @@ void loop() {
 
 
   // section pour les sorties du DAC
-  // avant d'envoyer les autres valeurs sur le DAC, verifier que la 
-  // fonction de linearisation ait une securite si la valeur lue est
-  // plus grande que la valeur MAX. (pareil pour le min).
   dac.load_value_adjusted(OUT_T0, tempT0, DAC_TC_MINVAL, DAC_TC_MAXVAL);
-/*   dac.load_value_adjusted(OUT_T1, tempT1, DAC_TC_MINVAL, DAC_TC_MAXVAL);
+  dac.load_value_adjusted(OUT_T1, tempT1, DAC_TC_MINVAL, DAC_TC_MAXVAL);
   dac.load_value_adjusted(OUT_T2, tempT2, DAC_TC_MINVAL, DAC_TC_MAXVAL);
   dac.load_value_adjusted(OUT_T3, tempT3, DAC_TC_MINVAL, DAC_TC_MAXVAL);
   dac.load_value_adjusted(OUT_LC50, weigth50, DAC_LC50_MINVAL, DAC_LC50_MAXVAL);
-  dac.load_value_adjusted(OUT_LC350, weigth350, DAC_LC350_MINVAL, DAC_LC350_MAXVAL); */
+  dac.load_value_adjusted(OUT_LC350, weigth350, DAC_LC350_MINVAL, DAC_LC350_MAXVAL);
 
 
   // Section pour l'affichage sur l'ecran.
