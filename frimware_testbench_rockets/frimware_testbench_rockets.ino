@@ -30,7 +30,7 @@
 
 /*///////////////////////////////////////////////////////////////
 *       INCLUDES REQUIS POUR LE FONCTIONNEMENT DU SYSTEME
-*////////////////////////////////////////////////////////////////
+*//////////////////////////////////////////////////////////////////////////////
 
 // Teensy_PinDefinition.h contient toutes les assignations des
 // pattes du Teensy 4.0. du systeme.
@@ -127,8 +127,6 @@ void setup() {
   Serial.begin(57600); 
   Serial.print("Serial Initialized.\n");
 
-
-  Wire.begin(); // Init l'I2C du Teensy
   LCD_init();   // Init de l'ecran LCD.
   Serial.print("I2C interface initialized.\n");
 
@@ -167,7 +165,7 @@ void setup() {
   if(digitalRead(PIN_PUSH_BTN) == LOW) calibrationMode = 1;
 
   pinMode(PIN_LOW_VOLT_WARN, INPUT);
-  bool LEDState = 0;
+
   
   lcd.clear();
 }
@@ -233,18 +231,18 @@ void loop() {
   double pressureReal = double(pressureBits/PRESSURE_RES);
 
   // section pour les sorties du DAC
-  dac.load_value_adjusted(OUT_T0, tempT0, DAC_TC_MINVAL, DAC_TC_MAXVAL);
-  dac.load_value_adjusted(OUT_T1, tempT1, DAC_TC_MINVAL, DAC_TC_MAXVAL);
-  dac.load_value_adjusted(OUT_T2, tempT2, DAC_TC_MINVAL, DAC_TC_MAXVAL);
-  dac.load_value_adjusted(OUT_T3, tempT3, DAC_TC_MINVAL, DAC_TC_MAXVAL);
-  dac.load_value_adjusted(OUT_LC50, weigth50, DAC_LC50_MINVAL, DAC_LC50_MAXVAL);
+  dac.load_value_adjusted(OUT_T0,    tempT0,    DAC_TC_MINVAL,    DAC_TC_MAXVAL);
+  dac.load_value_adjusted(OUT_T1,    tempT1,    DAC_TC_MINVAL,    DAC_TC_MAXVAL);
+  dac.load_value_adjusted(OUT_T2,    tempT2,    DAC_TC_MINVAL,    DAC_TC_MAXVAL);
+  dac.load_value_adjusted(OUT_T3,    tempT3,    DAC_TC_MINVAL,    DAC_TC_MAXVAL);
+  dac.load_value_adjusted(OUT_LC50,  weigth50,  DAC_LC50_MINVAL,  DAC_LC50_MAXVAL);
   dac.load_value_adjusted(OUT_LC350, weigth350, DAC_LC350_MINVAL, DAC_LC350_MAXVAL);
 
   // Lecture du signal "low voltage warning" (HIGH si Vin < 10.8 )
   // si Vin < 10.8, la LED D1 clignote.
   if(digitalRead(PIN_PRESSURE)){
     if(countLED < 100) { digitalWrite(PIN_LED, HIGH); }
-    else { digitalWrite(PIN_LED, LOW); } 
+    else { digitalWrite(PIN_LED, LOW); }
     countLED++;
     if(countLED > 200) { countLED = 0; }
   }
