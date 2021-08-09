@@ -3,28 +3,18 @@
 * Description : Fichier principal pour la carte d'acquisition 
 *               des donnees du banc d'essaie ROCKETS.
 *
+* - Possibilite d'ajouter un code d'initialisation lance seulement 
+*   si le bouton est pese lors du demarrage du systeme. (non utilise)
+*
+* 2021/08/09 - MBlais :
+*  - Version du code fonctionnel pour la demonstration finale 
+*  
 * 2021/07/22 - MBlais : 
 *  - Version initial du code. Creation du .h Teensy_PinDefinition
 *    contenant tous les assignations des pins du microcontroleur.
 *  - Initialisation de la comm serie, comm I2C et les HX711.
 *  - Ajout d'un mode de calibration si le btn S1 est pese.
 *      Pour l'instant, utilise pour mettre les LC a zero.
-* 
-*  A IMPLÉMENTER (X = done): 
-*    Loadcells    : X Conversion des valeurs en Kg
-*                   X Envoyer les valeurs sur l'ADC (vers labjack)
-*    
-*    Thermocouple : X Activer SPI 
-*                   X Communiquer avec MAX31856
-*                   X Envoyer valeurs sur l'ADC
-*
-*    Ecran LCD    : X Tester le I2C (3.3v -> 5v levelshift)
-*                   X Ajouter l'info requise sur l'ecran
-*                   X Ajuster backlight
-*
-*   AUTRE         : - faire un programme de calibration des LC
-*                   - ^^ mettre ce code en mode calibration?
-*                   - Ajouter un calcul d'offset pour les THRMCPLE
 *    
 *////////////////////////////////////////////////////////////////
 
@@ -49,6 +39,20 @@
 
 // Ces valeurs sont utiliser pour definir les minimums et les
 // maximums des sorties 0-10v allant vers le Labjack.
+
+//         Vout DAC
+//            ^
+//            |10    x
+//            |    x
+//            |  x
+//            |x
+//           x|
+//         x  |
+//       x    |
+//     x      |0
+//------------+--------------->val
+//   minVal         maxVal
+
 #define DAC_TC_MINVAL    -100  // degree C
 #define DAC_TC_MAXVAL     400  // 
 #define DAC_LC50_MINVAL   -5   // Kg
@@ -196,6 +200,7 @@ void loop() {
   // Si le bouton est pese, on change l'info afficher
   // Si on est rendu a la derniere page d'info, on retourne 
   // au premiere informations a afficher.
+  // Voir LCD.ino pour modifier/ajouter des pages.
   if (button.pressed()) {
     if((pageLCD + 1) == LCD_NB_PAGES) pageLCD = 0;
     else pageLCD++;
@@ -231,6 +236,7 @@ void loop() {
 
   // Lecture du signal "low voltage warning" (HIGH si Vin < 10.8 )
   // si Vin < 10.8, la LED D1 clignote.
+  // CETTE OPTION N'A PAS ETE VERIFIEE.
   if(digitalRead(PIN_PRESSURE)){
     if(countLED < 100) { digitalWrite(PIN_LED, HIGH); }
     else { digitalWrite(PIN_LED, LOW); }

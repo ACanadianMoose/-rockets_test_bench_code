@@ -1,3 +1,12 @@
+/*///////////////////////////////////////////////////////////////
+* LCD.ino
+* Description : Fichier contenant les fonctions pour initialiser
+*               et mettre a jour l'affichage LCD du systeme.
+*    
+*////////////////////////////////////////////////////////////////
+
+
+// Fonction d'initialisation de l'ecran LCD.
 void LCD_init(void)
 {
     printf("Initialisation de l'ecran LCD");

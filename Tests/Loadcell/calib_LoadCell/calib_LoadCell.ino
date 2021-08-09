@@ -7,8 +7,6 @@
 LiquidCrystal_I2C lcd(0x27,16,2);
 
 HX711 scale50;
-const long LC50_OFFSET = -247000;   // A CHANGER
-const long LC50_DIVIDER = 1;        // A CHANGER
 float weigth = 0;
 
 int LCDCount = 0;
