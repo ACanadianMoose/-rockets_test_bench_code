@@ -50,18 +50,18 @@
 // Ces valeurs sont utiliser pour definir les minimums et les
 // maximums des sorties 0-10v allant vers le Labjack.
 #define DAC_TC_MINVAL    -100  // degree C
-#define DAC_TC_MAXVAL     900  // 
-#define DAC_LC50_MINVAL   0    // Kg
+#define DAC_TC_MAXVAL     400  // 
+#define DAC_LC50_MINVAL   -5   // Kg
 #define DAC_LC50_MAXVAL   50   // 
-#define DAC_LC350_MINVAL  0    // 
+#define DAC_LC350_MINVAL  -5   // 
 #define DAC_LC350_MAXVAL  350  // 
 
-#define OUT_LC50  OUT_0  // definition des outputs du DAC
-#define OUT_LC350 OUT_1  // MAX5725 selon les sorties de 
+#define OUT_LC50  OUT_1  // definition des outputs du DAC
+#define OUT_LC350 OUT_0  // MAX5725 selon les sorties de 
 #define OUT_T0    OUT_2  // notre systeme.
 #define OUT_T1    OUT_3
-#define OUT_T2    OUT_4
-#define OUT_T3    OUT_5
+#define OUT_T2    OUT_4 
+#define OUT_T3    OUT_5 
 
 #define PRESSURE_RES 284.16 // Resolution du capteur de pression.
                             // L'ADC a 10bits donc 0 a 1023
@@ -84,9 +84,11 @@ LiquidCrystal_I2C lcd(0x27,16,2);
 // LCXX_OFFSET : Valeur lu lorsqu'aucune charge est presente.
 // LCXX_DIVIDER: Valeur lu / poids connu.
 HX711 scale50, scale350; 
-const long LC50_OFFSET = -18160;    // Val pour loadcell 1000Kg
-const float LC50_DIVIDER = 2322.86; // Val pour loadcell 1000Kg
-const long LC350_OFFSET = -17189;   // Val pour loadcell 1000Kg
+//const long LC50_OFFSET = -18160;    // Val pour loadcell 1000Kg
+//const float LC50_DIVIDER = 2322.86; // Val pour loadcell 1000Kg
+const long LC50_OFFSET = 0;   // Val pour sim 50 Kg (Demo ELE400)
+const double LC50_DIVIDER = 120; // Val pour sim 50 Kg (Demo ELE400)
+const long LC350_OFFSET = -17960;   // Val pour loadcell 1000Kg
 const long LC350_DIVIDER = 2322.86; // Val pour loadcell 1000Kg
 double weigth50, weigth350 = 0;
 
@@ -140,6 +142,7 @@ void setup() {
   scale350.set_scale(LC350_DIVIDER);
   scale350.set_offset(LC350_OFFSET);
   Serial.print("350 Kg Scale initialized.\n");
+  //scale350.tare();
 
   // Initialisation des MAX31856
   pinMode(PIN_DATARDY_T0, INPUT); // Les signaux DRDY en input.
@@ -177,24 +180,12 @@ void setup() {
 void loop() {
 
   if(calibrationMode){
-  /* Cette section du code est appele selon si
+  /* Cette section du code est appele seulement si
    * le bouton est appuye lors du demarrage du systeme.
    * 
-   * A FAIRE : 
-   * Modifier le fichier calib_loadcell.ino pour que ce soit
-   * une fonction qui fait la calibration des cellules de charges
-   * avec un poids connu.
-  
-    Serial.print("ENTERING TESTING MODE.\n");
-/*     Serial.print("Setting scales to zero in 3 seconds\n");
-    delay(3000);
-    scale50.tare();
-    scale350.tare();
-    Serial.print("scale reseted to zero.\n");
+   * Ajouter le code voulu dans cette section.
+   */ 
 
-    Serial.print("EXITING TESTING MODE.\n");
-    delay(500);
-    calibrationMode = 0; */
   }
 
   // Pour calculer la frequence d'operation

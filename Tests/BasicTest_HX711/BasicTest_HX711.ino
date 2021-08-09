@@ -6,6 +6,11 @@ const int LOADCELL_SCK_PIN = 15;
 
 HX711 scale;
 
+const long LC50_OFFSET = 0;
+const long LC50_DIVIDER = 0;
+const long LC350_OFFSET = 0;
+const long LC350_DIVIDER = 0;
+
 void setup() {
   Serial.begin(57600);
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
