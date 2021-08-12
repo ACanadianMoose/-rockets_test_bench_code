@@ -84,12 +84,9 @@ Bounce2::Button button = Bounce2::Button();
 LiquidCrystal_I2C lcd(0x27,16,2);
 
 // Variables utilisees par les loadcells
-//
 // LCXX_OFFSET : Valeur lu lorsqu'aucune charge est presente.
 // LCXX_DIVIDER: Valeur lu / poids connu.
 HX711 scale50, scale350; 
-//const long LC50_OFFSET = -18160;    // Val pour loadcell 1000Kg
-//const float LC50_DIVIDER = 2322.86; // Val pour loadcell 1000Kg
 const long LC50_OFFSET = 0;   // Val pour sim 50 Kg (Demo ELE400)
 const double LC50_DIVIDER = 120; // Val pour sim 50 Kg (Demo ELE400)
 const long LC350_OFFSET = -17960;   // Val pour loadcell 1000Kg
@@ -146,7 +143,6 @@ void setup() {
   scale350.set_scale(LC350_DIVIDER);
   scale350.set_offset(LC350_OFFSET);
   Serial.print("350 Kg Scale initialized.\n");
-  //scale350.tare();
 
   // Initialisation des MAX31856
   pinMode(PIN_DATARDY_T0, INPUT); // Les signaux DRDY en input.
@@ -172,7 +168,6 @@ void setup() {
   if(digitalRead(PIN_PUSH_BTN) == LOW) calibrationMode = 1;
 
   pinMode(PIN_LOW_VOLT_WARN, INPUT);
-
   
   lcd.clear();
 }
@@ -208,12 +203,12 @@ void loop() {
   
   // Lecture de la cellule de charge de 50 Kg
   // Bloquant pour l'instant si les HX711 ne sont pas connectes
-  while(!scale50.is_ready()) delay(1);     // PEUT ETRE INUTILE UNE FOIS LES MAXs IMPLEMENTES.
-  weigth50 = scale50.get_units();
+  while(!scale50.is_ready()) delay(1);     // Attente de 1ms si les data ne sont
+  weigth50 = scale50.get_units();          // pas pretes a etre lu.
 
   // Lecture de la cellule de charge de 350 Kg
   // Bloquant pour l'instant si les HX711 ne sont pas connectes
-  while(!scale350.is_ready()) delay(1);    // PEUT ETRE INUTILE UNE FOIS LES MAXs IMPLEMENTES.
+  while(!scale350.is_ready()) delay(1);    
   weigth350 = scale350.get_units();
 
   // Lecture des thermocouple. Seulement si DRDY est actif (signal LOW)
@@ -223,8 +218,8 @@ void loop() {
   if(!digitalRead(PIN_DATARDY_T3)){tempT3 = TC3.readThermocoupleTemperature();}
 
   // Lecture de la valeur de l'entree analogique pour le capteur de pression.
-  int pressureBits = analogRead(PIN_PRESSURE);
-  double pressureReal = double(pressureBits/PRESSURE_RES);
+  int pressureBits = analogRead(PIN_PRESSURE);  
+  double pressureReal = double(pressureBits/PRESSURE_RES); 
 
   // section pour les sorties du DAC
   dac.load_value_adjusted(OUT_T0,    tempT0,    DAC_TC_MINVAL,    DAC_TC_MAXVAL);
